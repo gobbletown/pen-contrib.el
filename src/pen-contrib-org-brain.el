@@ -101,3 +101,5 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
       (progn
         (message "Cancelled")
         (setq quit-flag nil)))))
+
+(provide 'pen-contrib-org-brain)
