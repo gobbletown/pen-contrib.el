@@ -1,0 +1,3 @@
+* Pen.el contrib library
+
+Integration of =pen.el= with other emacs packages.
