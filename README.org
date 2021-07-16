@@ -7,6 +7,8 @@ what is core from what is less important a
 part of =pen.el=.
 
 ** =pen-org-brain=
+[[https://mullikine.github.io/posts/gpt-3-for-building-mind-maps-with-an-ai-tutor-for-any-topic/][GPT-3 mind maps with an AI tutor for any topic // Bodacious Blog]]
 
-** =pen-org-roam=
-See "https://github.com/socketteer/loom"
+** TODO =pen-org-roam=
+Aim to be a loom-like library for emacs.
+See "https://github.com/socketteer/loom".
