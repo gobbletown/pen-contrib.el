@@ -16,12 +16,12 @@ I combine GPT-3 with org-brain to expand on topics, suggesting subtopics and pro
 
 [[https://mullikine.github.io/posts/gpt-3-for-building-mind-maps-with-an-ai-tutor-for-any-topic/][GPT-3 mind maps with an AI tutor for any topic // Bodacious Blog]]
 
-** TODO =pen-org-roam=
+** =pen-org-roam=
 Aim to be a loom-like library for emacs.
 See "https://github.com/socketteer/loom".
 
 ** =pen-handle=
-Place as defaults for 
+Make GPT-3 handlers common functions such as showing documentation.
 
 https://gitlab.com/jjzmajic/handle
 
