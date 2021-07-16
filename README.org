@@ -19,3 +19,14 @@ I combine GPT-3 with org-brain to expand on topics, suggesting subtopics and pro
 ** TODO =pen-org-roam=
 Aim to be a loom-like library for emacs.
 See "https://github.com/socketteer/loom".
+
+** =pen-handle=
+Place as defaults for 
+
+https://gitlab.com/jjzmajic/handle
+
+** =pen-nlsh=
+See "https://mullikine.github.io/posts/nlsh-natural-language-shell/"
+
+** =pen-nano=
+Simplify the editing experience so emacs novices can use =pen.el=.
