@@ -5,3 +5,8 @@ Integration of =pen.el= with other emacs packages.
 I have kept this separated to help distinguish
 what is core from what is less important a
 part of =pen.el=.
+
+** =pen-org-brain=
+
+** =pen-org-roam=
+See "https://github.com/socketteer/loom"
