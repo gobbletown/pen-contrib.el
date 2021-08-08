@@ -12,7 +12,7 @@
     "What are some good learning materials"))
 
 (defun pen-tutor-mode-assist (&optional query)
-  (interactive (let* ((bl (buffer-language t t)))
+  (interactive (let* ((bl (pen-detect-language t t nil t)))
                  (list
                   (read-string-hist
                    (concat "asktutor (" bl "): ")
