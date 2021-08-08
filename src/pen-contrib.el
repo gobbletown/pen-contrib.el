@@ -17,7 +17,7 @@
                   (read-string-hist
                    (concat "asktutor (" bl "): ")
                    (pen-thing-at-point)))))
-  (let ((bl (buffer-language t t)))
+  (let ((bl (pen-detect-language t t nil t)))
     (pf-asktutor bl bl query)))
 
 
