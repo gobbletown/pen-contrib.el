@@ -24,15 +24,17 @@
 
 (defun pen-nsfa (cmd &optional dir)
   (pen-sn (concat
-           (if dir (concat " CWD=" (q dir) " ")
+           (if dir (concat " CWD=" (pen-q dir) " ")
              "")
-           " pen-nsfa -E " (q cmd)) nil (or dir (cwd))))
+           " pen-nsfa -E " (pen-q cmd)) nil (or dir (cwd))))
 
-(defun comint-quick (cmd &optional dir)
+(defun comint-quick (cmd &optional dir prompt-regexp)
   (interactive (list (read-string-hist "comint-quick: ")))
   (let* ((slug (slugify cmd))
          (buf (make-comint slug (pen-nsfa cmd dir))))
     (with-current-buffer buf
+      (setq-local comint-use-prompt-regexp (if (sor prompt-regexp) t))
+      (setq-local comint-prompt-regexp prompt-regexp)
       (switch-to-buffer buf)
       (turn-on-comint-history (f-join pen-nlsh-histdir slug)))))
 
