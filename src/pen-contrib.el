@@ -2,7 +2,6 @@
 ;; i.e. applications built on pen.el
 
 (require 'pen-handle)
-(require 'pen-nlsh)
 (require 'pen-nano)
 (require 'pen-org-brain)
 (require 'pen-org-roam)
