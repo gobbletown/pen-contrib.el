@@ -2,7 +2,6 @@
 (require 'pen-support)
 
 (require 'org-brain)
-;; (require 'my-lists)
 
 (defalias 'org-brain-entry-to-string 'org-brain-entry-name)
 
@@ -246,7 +245,7 @@ If ALL is nil, choose only between externally linked children."
   (interactive)
 
   (let ((f (fz pen-org-brain-shortcut-list
-               nil nil "my-fz-org-brain-shortcut-select: ")))
+               nil nil "pen-fz-org-brain-shortcut-select: ")))
     (if (sor f)
         (call-interactively (str2sym f)))))
 
@@ -268,9 +267,6 @@ If ALL is nil, choose only between externally linked children."
   (org-brain-add-entry "index")
   (org-brain-visualize-reset-map "index"))
 
-
-
-
 (defun org-brain-entry-from-text (text)
   (interactive (list (read-string-hist "org-brain-entry: ")))
   (pen-org-brain-switch-brain (chomp (cut text :d "/" :f 1)))
@@ -278,7 +274,6 @@ If ALL is nil, choose only between externally linked children."
          (entry
           (org-brain-choose-entry "Goto entry: " 'all nil t name)))
     (org-brain-visualize entry)))
-
 
 (defun defswitchbrain (prefix brainname)
   (interactive (list (read-string "new brain prefix: ")
@@ -474,7 +469,7 @@ If ALL is nil, choose only between externally linked children."
         ;; (org-map-entries 'org-id-get-create "LEVEL=1")
         (org-map-entries 'org-brain-get-id t)
         (if save
-            (my-save-buffer)))))
+            (save-buffer)))))
 
 (defun org-id-remove-entry (&optional do-not-update-map)
 "Remove/delete the ID entry and update the databases.
@@ -503,11 +498,10 @@ Update the `org-id-locations' global hash-table, and update the
   (if (string-match "\\.org$" path)
       (with-current-buffer
           (find-file path)
-        ;; (beginning-of-buffer)
         (org-map-entries (lambda () (org-id-remove-entry t)) t)
         (org-id-update-id-locations nil 'silent)
         (if save
-            (my-save-buffer)))))
+            (save-buffer)))))
 
 (defun org-brain-name-from-list-maybe (l)
   (if (and (listp l)
@@ -757,39 +751,18 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
                                                     ,question)))))))
       (if (interactive-p)
           (etv answer)
-        answer))
-    ;; (mu
-    ;;  (etv
-    ;;   (pen-snc
-    ;;    (concat
-    ;;     (cmd
-    ;;      "oci" "-E"
-    ;;      (concat
-    ;;       (cmd
-    ;;        "oci"
-    ;;        "openai-complete"
-    ;;        "$MYGIT/semiosis/prompts/prompts/tutor.prompt"
-    ;;        cname
-    ;;        pname
-    ;;        question)
-    ;;       " | ttp"))))))
-    ))
+        answer))))
 
-(defun my-org-brain-goto-header ()
+(defun pen-org-brain-goto-header ()
   (interactive)
   ;; Actually, I don't want to create newlines
   (never (try
           (progn
-            ;; This is if you clicked on a brain local child
             (org-back-to-heading)
             (org-end-of-meta-data t)
-            ;; (forward-line)
             (newline)
             (previous-line))
           (progn
-            ;; This must add new lines AFTER the BRAIN_PARENTS and BRAIN_CHILDREN lines
-            ;; So I must go to the first heading (if there is one) then go back
-            ;; (call-interactively 'end-of-buffer)
             (call-interactively 'beginning-of-buffer)
             (if (re-match-p "^\\*" (buffer-string))
                 (progn (call-interactively 'org-next-visible-heading)
@@ -805,33 +778,21 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
    (progn
      ;; This is if you clicked on a brain local child
      (org-back-to-heading)
-     (org-end-of-meta-data t)
-     ;; (forward-line)
-     ;; (newline)
-     ;; (previous-line)
-     )
+     (org-end-of-meta-data t))
    (progn
-     ;; This must add new lines AFTER the BRAIN_PARENTS and BRAIN_CHILDREN lines
-     ;; So I must go to the first heading (if there is one) then go back
-     ;; (call-interactively 'end-of-buffer)
      (call-interactively 'beginning-of-buffer)
      (if (re-match-p "^\\*" (buffer-string))
          (progn (call-interactively 'org-next-visible-heading)
                 (previous-line)))
      (call-interactively 'mwim-end-of-line-or-code)
-     ;; (newline)
-     ;; (newline)
-     ;; (newline)
-     ;; (previous-line)
-     ;; (previous-line)
      (message "Couldn't find heading"))))
 
-(defun my-org-brain-goto-current ()
+(defun pen-org-brain-goto-current ()
   (interactive)
   (call-interactively 'org-brain-goto-current)
-  (call-interactively 'my-org-brain-goto-header))
+  (call-interactively 'pen-org-brain-goto-header))
 
-(define-key org-brain-visualize-mode-map (kbd "RET") 'my-org-brain-goto-current)
+(define-key org-brain-visualize-mode-map (kbd "RET") 'pen-org-brain-goto-current)
 
 (defun org-link-open-from-string (s &optional arg)
   "Open a link in the string S, as if it was in Org mode.
@@ -849,21 +810,7 @@ a \"file\" link."
     (`nil (user-error "No valid link in %S" s))
     (link (org-link-open link arg))))
 
-(define-key org-brain-visualize-mode-map (kbd "w") 'get-path)
-(define-key org-brain-visualize-mode-map (kbd "H-w") 'get-path)
-
-(define-key org-brain-visualize-mode-map (kbd "^") 'org-brain-visualize-parent)
-(define-key org-brain-visualize-mode-map (kbd "u") 'org-brain-visualize-parent)
-
-(define-key org-brain-visualize-mode-map (kbd "i") 'my-org-brain-goto-current)
-
-(define-key org-brain-visualize-mode-map (kbd "M-TAB") 'org-brain-suggest-subtopics)
-
-
-;; If it doesn't exist, automatically create a description for the topic
-;; (upd (call-interactively 'org-brain-describe-topic))
-
-(defun my-org-brain-add-child (entry children verbose)
+(defun pen-org-brain-add-child (entry children verbose)
   (interactive (list (if current-prefix-arg
                          (car (org-brain-button-at-point))
                        (org-brain-entry-at-pt t))
@@ -899,7 +846,7 @@ a \"file\" link."
       (if (sor description)
           (progn
             (let ((cb (current-buffer)))
-              (my-org-brain-goto-current)
+              (pen-org-brain-goto-current)
               (let ((block-name (concat (org-brain-current-name) "-description")))
                 (if (not (org-babel-find-named-block block-name))
                     (progn
@@ -1253,8 +1200,18 @@ Also stop descending if a node has been visited before.
 
 (define-key pen-map (kbd "H-q") 'pen-org-brain-switch-brain)
 (define-key pen-map (kbd "H-Q") 'pen-fz-org-brain-shortcut-select)
-(define-key org-brain-visualize-mode-map (kbd "c") 'my-org-brain-add-child)
+(define-key org-brain-visualize-mode-map (kbd "c") 'pen-org-brain-add-child)
 
 (define-key org-brain-visualize-mode-map (kbd "=") #'org-brain-visualize-add-grandchild)
+
+(define-key org-brain-visualize-mode-map (kbd "w") 'get-path)
+(define-key org-brain-visualize-mode-map (kbd "H-w") 'get-path)
+
+(define-key org-brain-visualize-mode-map (kbd "^") 'org-brain-visualize-parent)
+(define-key org-brain-visualize-mode-map (kbd "u") 'org-brain-visualize-parent)
+
+(define-key org-brain-visualize-mode-map (kbd "i") 'pen-org-brain-goto-current)
+
+(define-key org-brain-visualize-mode-map (kbd "M-TAB") 'org-brain-suggest-subtopics)
 
 (provide 'pen-org-brain)
