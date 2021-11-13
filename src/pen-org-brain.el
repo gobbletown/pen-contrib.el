@@ -259,7 +259,18 @@ If ALL is nil, choose only between externally linked children."
       (setq dir-or-name (f-join org-brains-dir dir-or-name)))
   (org-brain-switch-brain dir-or-name)
   (org-brain-add-entry "index")
-  (org-brain-visualize-reset-map "index"))
+  (org-brain-visualize-reset-map "index")
+
+  (org-brain-update-id-locations)
+
+  (loop for b in
+        (org-brain-files)
+        do
+        (find-file b)
+        (with-current-buffer (current-buffer)
+          (save-buffer)
+          (kill-buffer)))
+  )
 
 (defun org-brain-entry-from-text (text)
   (interactive (list (read-string-hist "org-brain-entry: ")))
