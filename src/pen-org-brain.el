@@ -732,25 +732,6 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
 (defun pen-org-brain-goto-header ()
   (interactive)
-  ;; Actually, I don't want to create newlines
-  (never (try
-          (progn
-            (org-back-to-heading)
-            (org-end-of-meta-data t)
-            (newline)
-            (previous-line))
-          (progn
-            (call-interactively 'beginning-of-buffer)
-            (if (re-match-p "^\\*" (buffer-string))
-                (progn (call-interactively 'org-next-visible-heading)
-                       (previous-line)))
-            (call-interactively 'mwim-end-of-line-or-code)
-            (newline)
-            (newline)
-            (newline)
-            (previous-line)
-            (previous-line)
-            (message "Couldn't find heading"))))
   (try
    (progn
      ;; This is if you clicked on a brain local child
