@@ -804,7 +804,7 @@ a \"file\" link."
               (concat pretext " " question)
             question)))
 
-    (let ((description (org-brain-asktutor final-question)))
+    (let ((description (eval `(upd (org-brain-asktutor ,final-question)))))
       (if (sor description)
           (progn
             (let ((cb (current-buffer)))
@@ -813,9 +813,8 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description))
-                      ;; (call-interactively 'save-buffer)
-                      ;; (call-interactively 'kill-buffer-and-window)
-                      )))
+                      (call-interactively 'save-buffer)
+                      (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
                 (revert-buffer))))))))
 
