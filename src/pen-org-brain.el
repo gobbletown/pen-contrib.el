@@ -720,8 +720,8 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
   (let ((topic (org-brain-current-topic)))
 
     (let ((answer
-           (pen-sn
-            "pen-pretty-paragraph | awk 1"
+           (pen-snc
+            "pen-pretty-paragraph"
             (eval
              `(pen-single-batch
                (pf-generic-tutor-for-any-topic/2
