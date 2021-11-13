@@ -5,7 +5,7 @@
 
 (defalias 'org-brain-entry-to-string 'org-brain-entry-name)
 
-(defvar org-brains-dir "~/org-brains")
+(defvar org-brains-dir "~/.pen/org-brains")
 
 (ignore-errors
   (mkdir org-brains-dir)
