@@ -794,7 +794,7 @@ a \"file\" link."
   (let* ((p (sor (org-brain-parent-name)))
          (pretext)
          (question (if (and
-                        p
+                        p "brain-description\"\""
                         (not (org-brain-at-child-of-index))
                         (not (org-brain-is-index-name p)))
                        (concat "Could you please explain what is meant by " (pen-topic t) " in the context of " p " and why it is important?")
