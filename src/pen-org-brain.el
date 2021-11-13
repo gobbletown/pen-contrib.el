@@ -8,8 +8,9 @@
 
 (defvar org-brains-dir "~/org-brains")
 
-(mkdir org-brains-dir)
-(mkdir (f-join org-brains-dir "billboard"))
+(ignore-errors
+  (mkdir org-brains-dir)
+  (mkdir (f-join org-brains-dir "billboard")))
 
 ;; To fix a dependency
 (require 'org-indent)
@@ -995,7 +996,9 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert
-                       (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description))
+                       description
+                       ;; (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description)
+                       )
                       (call-interactively 'save-buffer)
                       (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
