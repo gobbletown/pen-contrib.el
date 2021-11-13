@@ -817,7 +817,6 @@ a \"file\" link."
               (concat pretext " " question)
             question)))
 
-    ;; (etv final-question)
     (let ((description (org-brain-asktutor final-question)))
       (if (sor description)
           (progn
