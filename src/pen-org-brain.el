@@ -394,11 +394,6 @@ If ALL is nil, choose only between externally linked children."
 ;; (advice-add 'org-brain-visualize :around #'org-brain-visualize-around-advice)
 ;; (advice-remove 'org-brain-visualize #'org-brain-visualize-around-advice)
 
-;; This is for babel
-(define-key org-brain-visualize-mode-map (kbd "C-c C-c") #'org-ctrl-c-ctrl-c)
-(define-key org-brain-visualize-mode-map (kbd "C-c C-o") 'org-open-at-point)
-
-
 ;; This actually *doesn't* turn the headings into local children
 ;; So it's pretty useless
 (defun org-brain-visualize-this-org ()
@@ -411,20 +406,8 @@ If ALL is nil, choose only between externally linked children."
          (mant (file-name-sans-extension bn))
          (slug (slugify (concat dn "/" mant))))
 
-    ;; Open the org and add all the headlines by navigating to each ^* and then running this
-    ;; (org-brain-get-id)
-    ;; Save
-    ;; Then optionally, run this -- probably not necessary
-    ;; (org-brain-update-id-locations)
-    ;; Then navigate to it, below
-
-    ;; (etv slug)
-    ;; (etv (pen-cmd "ln" "-s" p "--" (etv slug)))
     (pen-sn (pen-cmd "ln" "-s" fp "--" (concat slug ".org")) nil org-brains-dir)
-    (org-brain-visualize slug)
-
-    ;; Then revert -- may not be necessary
-    ))
+    (org-brain-visualize slug)))
 
 
 (advice-add 'org-brain-get-id :around #'ignore-errors-around-advice)
@@ -1018,7 +1001,7 @@ Helper function for `org-brain-visualize'."
               child-name
               "]]"))))
     (if (interactive-p)
-        (my/copy p)
+        (xc p)
       p)))
 
 ;; This is more accurate than org-brain-get-path-for-child-name
@@ -1035,7 +1018,7 @@ Helper function for `org-brain-visualize'."
               (org-brain-entry-name entry)
               "]]"))))
     (if (interactive-p)
-        (my/copy p)
+        (xc p)
       p)))
 
 
@@ -1207,5 +1190,8 @@ Also stop descending if a node has been visited before.
 (define-key org-brain-visualize-mode-map (kbd "i") 'pen-org-brain-goto-current)
 
 (define-key org-brain-visualize-mode-map (kbd "M-TAB") 'org-brain-suggest-subtopics)
+
+(define-key org-brain-visualize-mode-map (kbd "C-c C-c") #'org-ctrl-c-ctrl-c)
+(define-key org-brain-visualize-mode-map (kbd "C-c C-o") 'org-open-at-point)
 
 (provide 'pen-org-brain)
