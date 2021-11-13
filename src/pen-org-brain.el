@@ -806,7 +806,6 @@ a \"file\" link."
   (require 'pen)
   (let* ((p (sor (org-brain-parent-name)))
          (pretext)
-         ;; (question (concat "Could you please explain what " (pen-topic t) " is and why it is important?"))
          (question (if (and
                         p
                         (not (org-brain-at-child-of-index))
@@ -828,9 +827,7 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert
-                       description
-                       ;; (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description)
-                       )
+                       description)
                       (call-interactively 'save-buffer)
                       (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
