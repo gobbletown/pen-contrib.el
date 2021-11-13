@@ -813,7 +813,7 @@ a \"file\" link."
               (let ((block-name (concat (org-brain-current-name) "-description")))
                 (if (not (org-babel-find-named-block block-name))
                     (progn
-                      (insert (pen-sn (pen-cmd "pen-org-template-gen | awk 1" "brain-description" block-name) description))
+                      (insert (pen-sn (concat (pen-cmd "pen-org-template-gen" "brain-description" block-name) " | awk 1") description))
                       (call-interactively 'save-buffer)
                       (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
