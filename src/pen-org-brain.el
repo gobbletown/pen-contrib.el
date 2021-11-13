@@ -806,8 +806,7 @@ a \"file\" link."
               (let ((block-name (concat (org-brain-current-name) "-description")))
                 (if (not (org-babel-find-named-block block-name))
                     (progn
-                      (insert
-                       description)
+                      (insert description)
                       (call-interactively 'save-buffer)
                       (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
@@ -816,7 +815,6 @@ a \"file\" link."
 (defun org-brain-show-topic ()
   (interactive)
   (call-interactively 'pen-topic))
-
 
 (defun org-brain-current-entry ()
   org-brain--vis-entry)
