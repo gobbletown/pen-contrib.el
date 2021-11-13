@@ -1021,7 +1021,6 @@ Helper function for `org-brain-visualize'."
         (xc p)
       p)))
 
-
 (defun org-brain-toggle-maybefictional (entry)
   "ENTRY gets a new NICKNAME.
 If run interactively use `org-brain-entry-at-pt' and prompt for NICKNAME."
@@ -1111,7 +1110,6 @@ Also stop descending if a node has been visited before.
                                (fs (mapcar 'org-brain-entry-name (org-brain-friends e)))
                                (cs (mapcar 'org-brain-entry-name (org-brain-children e))))
                           (list
-                           ;; (concat "[" n "]")
                            (if fs
                                (loop for f in fs
                                      collect
@@ -1124,10 +1122,7 @@ Also stop descending if a node has been visited before.
                                      collect
                                      (concat (e/q n) " -> " (e/q c)))
                              ;; "CHILDREN"
-                             )))
-                        ;; (list (org-brain-entry-name e)
-                        ;;       (org-brain-friends e))
-                        ))))))
+                             )))))))))
 
     (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode)))
 
