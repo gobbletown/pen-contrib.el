@@ -837,7 +837,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
     (let ((answer
            (eval
-            `(ci (pen-snc "ttp" (pen-single-batch (pf-generic-tutor-for-any-topic/2
+            `(pen-ci (pen-snc "ttp" (pen-single-batch (pf-generic-tutor-for-any-topic/2
                                                     ,topic
                                                     ;; ,cname
                                                     ;; ,pname
