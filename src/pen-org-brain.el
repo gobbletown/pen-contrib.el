@@ -654,7 +654,7 @@ Update the `org-id-locations' global hash-table, and update the
                 (-drop 1 l)
               l)))
 
-    (let ((topic (chomp (apply 'cmd path))))
+    (let ((topic (chomp (apply 'pen-cmd path))))
       (if (not (sor topic))
           (setq topic "general knowledge"))
 
