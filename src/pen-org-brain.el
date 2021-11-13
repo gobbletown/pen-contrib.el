@@ -804,7 +804,9 @@ a \"file\" link."
               (concat pretext " " question)
             question)))
 
-    (let ((description (eval `(upd (org-brain-asktutor ,final-question)))))
+    (let ((description
+           ;; (eval `(upd (org-brain-asktutor ,final-question)))
+           (org-brain-asktutor final-question)))
       (if (sor description)
           (progn
             (let ((cb (current-buffer)))
