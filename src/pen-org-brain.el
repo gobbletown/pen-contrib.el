@@ -729,7 +729,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
                 (let ((subtopic-candidates
                        ;; (pen-single-batch (pf-keyword-extraction/1 (org-brain-current-topic t)))
-                       (let ((sh-update (or sh-update
+                       (let ((pen-sh-update (or pen-sh-update
                                             update
                                             (eq (prefix-numeric-value current-prefix-arg) 4)))
                              (existing-subtopics-string (if do-not-incorportate-existing
