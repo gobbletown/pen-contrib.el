@@ -18,13 +18,6 @@
 ;; To fix a dependency
 (require 'org-capture)
 
-;; TODO Make this
-;; org-brain-mind-map-child-level
-;; (defcustom org-brain-category-icon-width 2
-;;   "The character width of icons."
-;;   :group 'org-brain
-;;   :type '(integer))
-
 (use-package org-brain :ensure t
   :init
   (setq org-brain-path (f-join org-brains-dir "billboard"))
@@ -93,10 +86,6 @@
        :underline t))
   "Face for org-brain-local-child buttons.")
 
-(define-key org-brain-visualize-mode-map (kbd "=") #'org-brain-visualize-add-grandchild)
-
-;; (-uniq-u '(a b c d a))
-;; child files
 (defun org-brain-list-child-nodes ()
   "child files"
   (interactive)
@@ -109,7 +98,6 @@
         (etv l)
       l)))
 
-;; local-child / heading
 (defun org-brain-list-child-headings ()
   "local-child / heading"
   (interactive)
@@ -124,16 +112,11 @@
         (p org-brain--vis-entry))
     (if (and b (button-face-p-here 'org-brain-local-child))
         (progn
-          ;; Find the one that matches
-          ;; (org-brain-headline-entries)
           (car (-filter
                 (lambda (e)
                   (and (equal (car e) org-brain--vis-entry))
                   (equal (second e) (str (button-get-text b))))
-                (org-brain-headline-entries)))
-          ;; (concat (org-brain-entry-at-pt) "::" (str (button-get-text b)))
-          ;; b
-          ))))
+                (org-brain-headline-entries)))))))
 
 (defun org-brain-file-at-point ()
   (let ((b (button-at-point))
@@ -150,9 +133,6 @@
           ;; This may be necessary here
           (org-brain-update-id-locations)))))
 
-;; TODO Make these
-;; org-brain-delete-this-entry
-
 (defun org-brain-visualize-goto (&optional entry)
   ""
   (interactive)
@@ -168,18 +148,10 @@
            (org-brain-friends entry)
            (org-brain-parents entry))))
 
-;; TODO Make his also able to take me to friends
 (defun org-brain-visualize-goto-associate (entry)
   ""
   (interactive (list ;; (org-brain-entry-at-pt)
                 org-brain--vis-entry))
-  ;; (let* ((entries (org-brain--linked-property-entries
-  ;;                  entry org-brain-children-property-name))
-  ;;        (child (cond
-  ;;                ((equal 1 (length entries)) (car-safe entries))
-  ;;                ((not entries) (error (concat entry " has no children")))
-  ;;                (t (org-brain-choose-entry "Goto child: " entries nil t)))))
-  ;;   (org-brain-visualize-goto child))
 
   (let* ((entries ;; (org-brain-children org-brain--vis-entry)
           (org-brain-associates org-brain--vis-entry))
@@ -246,34 +218,6 @@ If ALL is nil, choose only between externally linked children."
                  (t (org-brain-choose-entry "Goto child: " entries nil t)))))
     (org-brain-goto child)))
 
-
-;; org-brain-set-title
-;; org-brain-open-resource
-
-
-
-(define-key org-brain-visualize-mode-map (kbd "t") 'org-brain-visualize-top)
-(define-key org-brain-visualize-mode-map (kbd "O") 'org-brain-goto-current)
-(define-key org-brain-visualize-mode-map (kbd "o") 'org-brain-visualize-goto)
-(define-key org-brain-visualize-mode-map (kbd "y") 'org-brain-goto-child)
-(define-key org-brain-visualize-mode-map (kbd "i") (dff (obvrm "index")))
-(define-key org-brain-visualize-mode-map (kbd "r") 'org-brain-visualize-goto-recursive-children-flat)
-(define-key org-brain-visualize-mode-map (kbd "j") 'org-brain-visualize-goto-associate)
-(define-key org-brain-visualize-mode-map (kbd "H") 'org-brain-visualize-goto-associate)
-(define-key org-brain-visualize-mode-map (kbd "k") 'org-brain-toggle-maybefictional)
-(define-key org-brain-visualize-mode-map (kbd "Y") 'pen-org-brain-switch-brain)
-
-(define-key pen-map (kbd "H-q") 'pen-org-brain-switch-brain)
-(define-key pen-map (kbd "H-Q") 'pen-fz-org-brain-shortcut-select)
-
-(never
- (define-key org-brain-visualize-mode-map (kbd "U") 'org-brain-visualize-top)
- (define-key org-brain-visualize-mode-map (kbd "E") 'org-brain-goto)
- (define-key org-brain-visualize-mode-map (kbd "G") 'org-brain-visualize-goto)
- (define-key org-brain-visualize-mode-map (kbd "B") 'org-brain-goto-child)
- )
-
-;; (define-key org-brain-visualize-mode-map (kbd "R") 'org-brain-goto-child-recursively)
 
 (defun org-brain-add-entry (title)
   "Add a new entry named TITLE."
@@ -962,12 +906,8 @@ a \"file\" link."
         (org-brain-add-child entry children verbose)
         ;; (tv (pps children))
         (org-brain-visualize (car (last children))))))
-(define-key org-brain-visualize-mode-map (kbd "c") 'my-org-brain-add-child)
 
 
-;; TODO Make it so this topic description is also enhanced with
-;; properties of the topic.
-;; Add to the pretext
 (defun org-brain-describe-topic ()
   (interactive)
 
@@ -1002,12 +942,7 @@ a \"file\" link."
                       (call-interactively 'save-buffer)
                       (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
-                (revert-buffer))))))
-
-    ;; (if (org-babel-find-named-block "geology-description"))
-    ))
-
-
+                (revert-buffer))))))))
 
 (defun org-brain-show-topic ()
   (interactive)
@@ -1036,9 +971,6 @@ a \"file\" link."
 (defun org-brain-at-top ()
   (eq 1 (org-brain-current-depth)))
 
-;; The following are slightly redundant now
-;; If it is a specialised brain, such as philosophy, the topic, when suggested, needs to be the brain name
-;; Therefore, such brains do not count themselves among this list.
 (defun org-brain-is-index-name (s)
   (or (string-equal s "index")
       (string-equal s "infogetics")
@@ -1164,7 +1096,6 @@ Helper function for `org-brain-visualize'."
   (insert (concat "BRAIN: " (org-brain-current-brain)))
   (insert "\n"))
 
-
 (defun org-brain-get-path-for-child-name (child-name &optional semantic-path)
   "This gets the path for the entry given the name of a child, current brain and current entry."
   (interactive)
@@ -1222,12 +1153,6 @@ If run interactively use `org-brain-entry-at-pt' and prompt for NICKNAME."
   (interactive)
   (nbfs (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 100 'org-brain-entry-name)) nil 'emacs-lisp-mode))
 
-;; This will have to be a tree of hash tables
-
-;; Be careful. This does work recursively, but doesn't know currently if a node has already appeared
-;; Factor that in
-;; Also list the friends for each entry
-;; This is generating a dot graph, so I don't need to care about double up
 (defun pp-org-brain-tree (tre &optional parent)
   (interactive (list (org-brain-recursive-children
                       (org-brain-current-entry) 100
@@ -1237,17 +1162,9 @@ If run interactively use `org-brain-entry-at-pt' and prompt for NICKNAME."
                                 (if f
                                     (let ((ht (make-hash-table)))
                                       (puthash :friends f ht)
-                                      ht))))
-                        ;; (list (org-brain-entry-name e)
-                        ;;       (org-brain-friends e))
-                        ))))
+                                      ht))))))))
 
-  (nbfs (pp-to-string tre) nil 'emacs-lisp-mode)
-
-  ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
-
-  ;; (loop for c in t)
-  )
+  (nbfs (pp-to-string tre) nil 'emacs-lisp-mode))
 
 (defun org-brain-recursive-children-visited (entry max-level visited &optional func)
   "Return a tree of ENTRY and its (grand)children up to MAX-LEVEL.
@@ -1265,7 +1182,6 @@ Also stop descending if a node has been visited before.
                         (org-brain-children entry)))))))
 
 (defvar org-brain-visited-ht)
-;; (setq ht-str-testfun (define-hash-table-test 'contents-hash ht-str-testfun 'sxhash-equal))
 
 (defun org-brain-recursive-associates-visited (entry max-level &optional func)
   "Return a tree of ENTRY and its (grand)associates up to MAX-LEVEL.
@@ -1281,55 +1197,6 @@ Also stop descending if a node has been visited before.
                 (ht-set org-brain-visited-ht (sxhash-equal en) t)
                 (mapcar (lambda (x) (org-brain-recursive-associates-visited x (1- max-level) func))
                         (org-brain-associates entry)))))))
-
-;; (defun org-brain-to-dot (&optional depth recurfun)
-;;   (interactive (list (string-to-int (read-string-hist "depth: " "5" nil 5))
-;;                      (str2sym (fz '("org-brain-recursive-associates-visited"
-;;                                     "org-brain-recursive-children-visited")
-;;                                   "org-brain-recursive-associates-visited"
-;;                                   nil "recurfun: "))))
-
-;;   (if (not depth)
-;;       (setq depth 5))
-
-;;   (if (not recurfun)
-;;       (setq recurfun 'org-brain-recursive-associates-visited))
-
-;;   (let ((tre
-;;          (-flatten
-;;           (progn
-;;             (setq org-brain-visited-ht (make-hash-table))
-;;             (funcall recurfun
-;;                      (org-brain-current-entry) depth
-;;                      (lambda (e)
-;;                        (let* ((n (org-brain-entry-name e))
-;;                               (fs (mapcar 'org-brain-entry-name (org-brain-friends e)))
-;;                               (cs (mapcar 'org-brain-entry-name (org-brain-children e))))
-;;                          (list
-;;                           ;; (concat "[" n "]")
-;;                           (if fs
-;;                               (loop for f in fs
-;;                                     collect
-;;                                     (list (concat (e/q n) " -> " (e/q f))
-;;                                           (concat (e/q f) " -> " (e/q n))))
-;;                             ;; "FRIENDS"
-;;                             )
-;;                           (if cs
-;;                               (loop for c in cs
-;;                                     collect
-;;                                     (concat (e/q n) " -> " (e/q c)))
-;;                             ;; "CHILDREN"
-;;                             )))
-;;                        ;; (list (org-brain-entry-name e)
-;;                        ;;       (org-brain-friends e))
-;;                        ))))))
-
-;;     (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
-
-;;   ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
-
-;;   ;; (loop for c in t)
-;;   )
 
 (defun org-brain-to-dot-associates (&optional depth)
   (interactive (list
@@ -1370,12 +1237,7 @@ Also stop descending if a node has been visited before.
                         ;;       (org-brain-friends e))
                         ))))))
 
-    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
-
-  ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
-
-  ;; (loop for c in t)
-  )
+    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode)))
 
 (defun org-brain-to-dot-children (&optional depth)
   (interactive (list (string-to-int (read-string-hist "depth: " "5" nil 5))))
@@ -1405,16 +1267,26 @@ Also stop descending if a node has been visited before.
                         ;;       (org-brain-friends e))
                         ))))))
 
-    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
-
-  ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
-
-  ;; (loop for c in t)
-  )
+    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode)))
 
 (define-key org-brain-visualize-mode-map (kbd "C-c C-d") 'org-brain-to-dot-associates)
-
-
 (define-key org-brain-visualize-mode-map (kbd "R") 'org-brain-rename-file)
+
+(define-key org-brain-visualize-mode-map (kbd "t") 'org-brain-visualize-top)
+(define-key org-brain-visualize-mode-map (kbd "O") 'org-brain-goto-current)
+(define-key org-brain-visualize-mode-map (kbd "o") 'org-brain-visualize-goto)
+(define-key org-brain-visualize-mode-map (kbd "y") 'org-brain-goto-child)
+(define-key org-brain-visualize-mode-map (kbd "i") (dff (obvrm "index")))
+(define-key org-brain-visualize-mode-map (kbd "r") 'org-brain-visualize-goto-recursive-children-flat)
+(define-key org-brain-visualize-mode-map (kbd "j") 'org-brain-visualize-goto-associate)
+(define-key org-brain-visualize-mode-map (kbd "H") 'org-brain-visualize-goto-associate)
+(define-key org-brain-visualize-mode-map (kbd "k") 'org-brain-toggle-maybefictional)
+(define-key org-brain-visualize-mode-map (kbd "Y") 'pen-org-brain-switch-brain)
+
+(define-key pen-map (kbd "H-q") 'pen-org-brain-switch-brain)
+(define-key pen-map (kbd "H-Q") 'pen-fz-org-brain-shortcut-select)
+(define-key org-brain-visualize-mode-map (kbd "c") 'my-org-brain-add-child)
+
+(define-key org-brain-visualize-mode-map (kbd "=") #'org-brain-visualize-add-grandchild)
 
 (provide 'pen-org-brain)
