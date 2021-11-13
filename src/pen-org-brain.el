@@ -517,8 +517,8 @@ If ALL is nil, choose only between externally linked children."
     ;; Then navigate to it, below
 
     ;; (etv slug)
-    ;; (etv (cmd "ln" "-s" p "--" (etv slug)))
-    (pen-sn (cmd "ln" "-s" fp "--" (concat slug ".org")) nil org-brains-dir)
+    ;; (etv (pen-cmd "ln" "-s" p "--" (etv slug)))
+    (pen-sn (pen-cmd "ln" "-s" fp "--" (concat slug ".org")) nil org-brains-dir)
     (org-brain-visualize slug)
 
     ;; Then revert -- may not be necessary
@@ -530,14 +530,14 @@ If ALL is nil, choose only between externally linked children."
 (defun idify-org-files-here (dirpath)
   (interactive (list (read-directory-name "idify-org-files dir: ")))
   (loop for fp in
-        (-filter 'sor (pen-str2list (pen-snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
+        (-filter 'sor (pen-str2list (pen-snc (pen-cmd "find" dirpath "-type" "f" "-name" "*.org"))))
         do
         (idify-org-file fp t)))
 
 (defun unidify-org-files-here (dirpath)
   (interactive (list (read-directory-name "unidify-org-files dir: ")))
   (loop for fp in
-        (-filter 'sor (pen-str2list (pen-snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
+        (-filter 'sor (pen-str2list (pen-snc (pen-cmd "find" dirpath "-type" "f" "-name" "*.org"))))
         do
         (unidify-org-file fp t)))
 
@@ -791,7 +791,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
                   ;;         :stdin
                   ;;         (chomp
                   ;;          (pen-snc
-                  ;;           (cmd "scrape" "^- [a-zA-Z -]+$")
+                  ;;           (pen-cmd "scrape" "^- [a-zA-Z -]+$")
                   ;;           (concat "- " subtopic-candidates))) :chomp t)))
 
                   ;; (ns current-prefix-arg)
@@ -998,7 +998,7 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert
-                       (pen-snc (cmd "org-template-gen" "brain-description" block-name) description))
+                       (pen-snc (pen-cmd "org-template-gen" "brain-description" block-name) description))
                       (call-interactively 'save-buffer)
                       (call-interactively 'my/revert-kill-buffer-and-window))
                   ;; (progn
