@@ -972,10 +972,7 @@ a \"file\" link."
 
   (require 'pen)
   (let* ((p (sor (org-brain-parent-name)))
-         (pretext
-          ;; (if (and p (not (org-brain-at-child-of-index)))
-          ;;     (concat "I know " (org-brain-current-name) " is a subtopic of " p "."))
-          )
+         (pretext)
          ;; (question (concat "Could you please explain what " (pen-topic t) " is and why it is important?"))
          (question (if (and
                         p
@@ -998,20 +995,9 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert
-                       (pen-snc (pen-cmd "org-template-gen" "brain-description" block-name) description))
+                       (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description))
                       (call-interactively 'save-buffer)
-                      (call-interactively 'my/revert-kill-buffer-and-window))
-                  ;; (progn
-                  ;;   (ekm "< t")
-                  ;;   ;; (ekm "C-c '")
-                  ;;   (with-current-buffer (org-edit-special)
-                  ;;     (insert description)
-                  ;;     ;; (ekm "C-c '")
-                  ;;     (call-interactively 'org-edit-src-exit))
-                  ;;   ;; (ekm "C-c N")
-                  ;;   (call-interactively 'org-babel-add-name)
-                  ;;   (insert block-name))
-                  ))
+                      (call-interactively 'kill-buffer-and-window))))
               (with-current-buffer cb
                 (revert-buffer))))))
 
