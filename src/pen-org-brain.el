@@ -2,7 +2,7 @@
 (require 'pen-support)
 
 (require 'org-brain)
-(require 'my-lists)
+;; (require 'my-lists)
 
 (defalias 'org-brain-entry-to-string 'org-brain-entry-name)
 
@@ -37,6 +37,14 @@
   ;; This is far more reasonable
   (setq org-brain-title-max-length 30))
 
+(defmacro setface (name spec doc)
+  `(custom-set-faces (list ',name
+                           ,spec)))
+
+(defmacro defsetface (name spec doc)
+  `(progn
+     (defface ,name ,spec ,doc)
+     (setface ,name ,spec ,doc)))
 
 (defsetface org-brain-title
   '((t :foreground "#999999"
@@ -247,9 +255,10 @@ If ALL is nil, choose only between externally linked children."
 (define-key org-brain-visualize-mode-map (kbd "j") 'org-brain-visualize-goto-associate)
 (define-key org-brain-visualize-mode-map (kbd "H") 'org-brain-visualize-goto-associate)
 (define-key org-brain-visualize-mode-map (kbd "k") 'org-brain-toggle-maybefictional)
-(define-key org-brain-visualize-mode-map (kbd "Y") 'my-org-brain-switch-brain)
-(define-key my-mode-map (kbd "H-q") 'my-org-brain-switch-brain)
-(define-key my-mode-map (kbd "H-Q") 'my-fz-org-brain-shortcut-select)
+(define-key org-brain-visualize-mode-map (kbd "Y") 'pen-org-brain-switch-brain)
+
+(define-key pen-map (kbd "H-q") 'pen-org-brain-switch-brain)
+(define-key pen-map (kbd "H-Q") 'pen-fz-org-brain-shortcut-select)
 
 (never
  (define-key org-brain-visualize-mode-map (kbd "U") 'org-brain-visualize-top)
@@ -283,10 +292,10 @@ If ALL is nil, choose only between externally linked children."
       (setq org-brain-visualizing-mind-map nil))
     (revert-buffer)))
 
-(defun my-fz-org-brain-shortcut-select ()
+(defun pen-fz-org-brain-shortcut-select ()
   (interactive)
 
-  (let ((f (fz my-org-brain-shortcut-list
+  (let ((f (fz pen-org-brain-shortcut-list
                nil nil "my-fz-org-brain-shortcut-select: ")))
     (if (sor f)
         (call-interactively (str2sym f)))))
@@ -294,7 +303,7 @@ If ALL is nil, choose only between externally linked children."
 (defun my-fz-org-brain-select ()
   (interactive)
 
-  (let ((f (fz my-org-brain-list
+  (let ((f (fz pen-org-brain-list
                nil nil "my-fz-org-brain-select: ")))
     (if (sor f)
         (call-interactively (str2sym f))))
@@ -318,7 +327,7 @@ If ALL is nil, choose only between externally linked children."
   ;;       (org-brain-visualize-reset-map e)))
   )
 
-(defun my-org-brain-switch-brain (dir-or-name)
+(defun pen-org-brain-switch-brain (dir-or-name)
   (interactive (list (fz (mapcar 'f-base (glob "/home/shane/org-brains/*"))
                          nil nil "switch brain: ")) "D")
   (if (and (not (f-directory-p dir-or-name))
@@ -333,7 +342,7 @@ If ALL is nil, choose only between externally linked children."
 
 (defun org-brain-entry-from-text (text)
   (interactive (list (read-string-hist "org-brain-entry: ")))
-  (my-org-brain-switch-brain (chomp (cut text :d "/" :f 1)))
+  (pen-org-brain-switch-brain (chomp (cut text :d "/" :f 1)))
   (let* ((name (chomp (cut text :d "/" :f 2)))
          (entry
           (org-brain-choose-entry "Goto entry: " 'all nil t name)))
@@ -342,38 +351,40 @@ If ALL is nil, choose only between externally linked children."
 
 
 (defalias 'obvrm 'org-brain-visualize-reset-map)
-(defalias 'obsb 'my-org-brain-switch-brain)
+(defalias 'obsb 'pen-org-brain-switch-brain)
 
 ;; TODO Turn this into a fuzzy list too
 
 
-(defset my-org-brain-list '())
-(defset my-org-brain-shortcut-list '())
-(defset my-org-brain-local-shortcut-list '())
+(defset pen-org-brain-list '())
+(defset pen-org-brain-shortcut-list '())
+(defset pen-org-brain-local-shortcut-list '())
+
+(defalias 'esed 'replace-regexp-in-string)
 
 (defun defswitchbrain (prefix brainname)
   (interactive (list (read-string "new brain prefix: ")
                      (read-string "new brain name: ")))
 
   (let ((fun (eval `(dff (obsb ,brainname)))))
-    (add-to-list 'my-org-brain-list fun)
+    (add-to-list 'pen-org-brain-list fun)
     (define-key org-brain-visualize-mode-map (kbd (concat "SPC " (esed "\\(.\\)" "\\1 " prefix))) fun)))
 
 (defun defswitchbrainentry (prefix entry)
   (let ((fun (eval `(dff (obeft ,entry)))))
-    (add-to-list 'my-org-brain-shortcut-list fun)
+    (add-to-list 'pen-org-brain-shortcut-list fun)
     (define-key org-brain-visualize-mode-map (kbd (concat "D " (esed "\\(.\\)" "\\1 " prefix))) fun)))
 
 (defun defswitchbrainlocalshortcut (prefix entry)
   (let ((fun (eval `(dff (obvrm ,entry)))))
-    (add-to-list 'my-org-brain-local-shortcut-list fun)
+    (add-to-list 'pen-org-brain-local-shortcut-list fun)
     (define-key org-brain-visualize-mode-map (kbd (concat "I " (esed "\\(.\\)" "\\1 " prefix))) fun)))
 (defalias 'dsbls 'defswitchbrainlocalshortcut)
 
 (defun brain-shortcuts () (interactive) (j 'brain-shortcuts))
 (define-key org-brain-visualize-mode-map (kbd ".") 'brain-shortcuts)
 ;; (define-key org-brain-visualize-mode-map (kbd ">") 'brain-shortcuts)
-(define-key org-brain-visualize-mode-map (kbd ">") 'my-fz-org-brain-shortcut-select)
+(define-key org-brain-visualize-mode-map (kbd ">") 'pen-fz-org-brain-shortcut-select)
 (define-key org-brain-visualize-mode-map (kbd "Z") 'my-fz-org-brain-select)
 
 (defvar brainkeys
@@ -440,7 +451,7 @@ If ALL is nil, choose only between externally linked children."
           -b "billboard"
           -i "ideation"
           )))
-    (my-org-brain-switch-brain br)))
+    (pen-org-brain-switch-brain br)))
 
 ;; These shortcuts should really just be fuzzy searchable. They are lol
 ;; Prefix D
