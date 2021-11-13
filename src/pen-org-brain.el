@@ -615,8 +615,8 @@ Update the `org-id-locations' global hash-table, and update the
            path)))
 
 (defun org-brain-parent-name ()
-  (snc "s join"
-    (list2str
+  (pen-snc "pen-str join"
+    (pen-list2str
            (org-brain-remove-irrelevant-names-from-path
             (mapcar
              'org-brain-name-from-list-maybe
@@ -697,7 +697,7 @@ Update the `org-id-locations' global hash-table, and update the
 (defun org-brain-existing-subtopics-stringlist (&optional add-dash)
   ;; output a multiline dashed string
   (awk1
-   (list2str
+   (pen-list2str
     (if add-dash
         (mapcar
          (lambda (s) (concat "- " s))
@@ -790,7 +790,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
                   ;;         "sed 's/^- //'"
                   ;;         :stdin
                   ;;         (chomp
-                  ;;          (snc
+                  ;;          (pen-snc
                   ;;           (cmd "scrape" "^- [a-zA-Z -]+$")
                   ;;           (concat "- " subtopic-candidates))) :chomp t)))
 
@@ -802,9 +802,9 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
                                (try
                                 (cond
                                  (edit-full-list
-                                  (nbfs (list2str subtopic-candidates)))
+                                  (nbfs (pen-list2str subtopic-candidates)))
                                  (suggest-full-list
-                                  (let ((b (nbfs (list2str subtopic-candidates))))
+                                  (let ((b (nbfs (pen-list2str subtopic-candidates))))
                                     (with-current-buffer b
                                       (let ((r (if (yn "Add all?")
                                                    subtopic-candidates)))
@@ -837,7 +837,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
     (let ((answer
            (eval
-            `(ci (snc "ttp" (pen-single-batch (pf-generic-tutor-for-any-topic/2
+            `(ci (pen-snc "ttp" (pen-single-batch (pf-generic-tutor-for-any-topic/2
                                                     ,topic
                                                     ;; ,cname
                                                     ;; ,pname
@@ -847,7 +847,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
         answer))
     ;; (mu
     ;;  (etv
-    ;;   (snc
+    ;;   (pen-snc
     ;;    (concat
     ;;     (cmd
     ;;      "oci" "-E"
@@ -1335,7 +1335,7 @@ Also stop descending if a node has been visited before.
 ;;                        ;;       (org-brain-friends e))
 ;;                        ))))))
 
-;;     (nbfs (snc "uniqnosort" (list2str tre)) nil 'graphviz-dot-mode))
+;;     (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
 
 ;;   ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
 
@@ -1381,7 +1381,7 @@ Also stop descending if a node has been visited before.
                         ;;       (org-brain-friends e))
                         ))))))
 
-    (nbfs (snc "uniqnosort" (list2str tre)) nil 'graphviz-dot-mode))
+    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
 
   ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
 
@@ -1416,7 +1416,7 @@ Also stop descending if a node has been visited before.
                         ;;       (org-brain-friends e))
                         ))))))
 
-    (nbfs (snc "uniqnosort" (list2str tre)) nil 'graphviz-dot-mode))
+    (nbfs (pen-snc "uniqnosort" (pen-list2str tre)) nil 'graphviz-dot-mode))
 
   ;; (etv (pp-to-string (org-brain-recursive-children (org-brain-current-entry) 10 'org-brain-entry-name)))
 
