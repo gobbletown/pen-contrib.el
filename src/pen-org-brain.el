@@ -6,6 +6,11 @@
 
 (defalias 'org-brain-entry-to-string 'org-brain-entry-name)
 
+(defvar org-brains-dir "~/org-brains")
+
+(mkdir org-brains-dir)
+(mkdir (f-join org-brains-dir "billboard"))
+
 ;; To fix a dependency
 (require 'org-indent)
 
@@ -21,7 +26,7 @@
 
 (use-package org-brain :ensure t
   :init
-  (setq org-brain-path "~/org-brains/billboard")
+  (setq org-brain-path (f-join org-brains-dir "billboard"))
   ;; For Evil users
   ;;(with-eval-after-load 'evil
   ;;  (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
@@ -328,11 +333,11 @@ If ALL is nil, choose only between externally linked children."
   )
 
 (defun pen-org-brain-switch-brain (dir-or-name)
-  (interactive (list (fz (mapcar 'f-base (glob "/home/shane/org-brains/*"))
+  (interactive (list (fz (mapcar 'f-base (glob (f-join org-brains-dir "*")))
                          nil nil "switch brain: ")) "D")
   (if (and (not (f-directory-p dir-or-name))
-           (f-directory-p (concat "/home/shane/org-brains/" dir-or-name)))
-      (setq dir-or-name (concat "/home/shane/org-brains/" dir-or-name)))
+           (f-directory-p (f-join org-brains-dir dir-or-name)))
+      (setq dir-or-name (f-join org-brains-dir dir-or-name)))
   (org-brain-switch-brain dir-or-name)
   (org-brain-add-entry "index")
   (org-brain-visualize-reset-map "index"))
@@ -447,7 +452,7 @@ If ALL is nil, choose only between externally linked children."
   (interactive)
 
   (let ((br
-         (qa
+         (pen-qa
           -b "billboard"
           -i "ideation"
           )))
@@ -513,7 +518,7 @@ If ALL is nil, choose only between externally linked children."
 
     ;; (etv slug)
     ;; (etv (cmd "ln" "-s" p "--" (etv slug)))
-    (sn (cmd "ln" "-s" fp "--" (concat slug ".org")) nil "/home/shane/org-brain")
+    (pen-sn (cmd "ln" "-s" fp "--" (concat slug ".org")) nil org-brains-dir)
     (org-brain-visualize slug)
 
     ;; Then revert -- may not be necessary
@@ -525,14 +530,14 @@ If ALL is nil, choose only between externally linked children."
 (defun idify-org-files-here (dirpath)
   (interactive (list (read-directory-name "idify-org-files dir: ")))
   (loop for fp in
-        (-filter 'sor (str2list (snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
+        (-filter 'sor (pen-str2list (pen-snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
         do
         (idify-org-file fp t)))
 
 (defun unidify-org-files-here (dirpath)
   (interactive (list (read-directory-name "unidify-org-files dir: ")))
   (loop for fp in
-        (-filter 'sor (str2list (snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
+        (-filter 'sor (pen-str2list (pen-snc (cmd "find" dirpath "-type" "f" "-name" "*.org"))))
         do
         (unidify-org-file fp t)))
 
@@ -712,7 +717,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
   (let ((inhibit-quit t))
     (unless (with-local-quit
               (progn
-                (qa
+                (pen-qa
                  -u (setq update t)
                  -n (setq do-not-incorporate-existing t)
                  -i (setq do-not-incorporate-existing nil)
@@ -993,7 +998,7 @@ a \"file\" link."
                 (if (not (org-babel-find-named-block block-name))
                     (progn
                       (insert
-                       (snc (cmd "org-template-gen" "brain-description" block-name) description))
+                       (pen-snc (cmd "org-template-gen" "brain-description" block-name) description))
                       (call-interactively 'save-buffer)
                       (call-interactively 'my/revert-kill-buffer-and-window))
                   ;; (progn
@@ -1339,7 +1344,7 @@ Also stop descending if a node has been visited before.
 
 (defun org-brain-to-dot-associates (&optional depth)
   (interactive (list
-                (qa
+                (pen-qa
                  -a 0 -s 1 -d 2 -f 3 -g 4
                  -r (string-to-int (read-string-hist "depth: " "5" nil 5)))))
 
