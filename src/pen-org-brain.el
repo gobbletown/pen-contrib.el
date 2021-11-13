@@ -97,13 +97,13 @@
             (org-brain-children org-brain--vis-entry)
             (org-brain-local-children org-brain--vis-entry)))))
     (if (interactive-p)
-        (etv l)
+        (pen-etv l)
       l)))
 
 (defun org-brain-list-child-headings ()
   "local-child / heading"
   (interactive)
-  (etv (-uniq
+  (pen-etv (-uniq
         (-uniq-d
          (append
           (org-brain-children org-brain--vis-entry)
@@ -543,7 +543,7 @@ Update the `org-id-locations' global hash-table, and update the
           (setq topic "general knowledge"))
 
       (if (interactive-p)
-          (etv topic)
+          (pen-etv topic)
         topic))))
 
 (defun org-brain-google-here (query)
@@ -721,13 +721,17 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
     (let ((answer
            (eval
-            `(pen-ci (pen-snc "ttp" (pen-single-batch (pf-generic-tutor-for-any-topic/2
-                                                    ,topic
-                                                    ;; ,cname
-                                                    ;; ,pname
-                                                    ,question)))))))
+            `(pen-ci
+              (pen-snc
+               "pen-pretty-paragraph"
+               (pen-single-batch
+                (pf-generic-tutor-for-any-topic/2
+                 ,topic
+                 ;; ,cname
+                 ;; ,pname
+                 ,question)))))))
       (if (interactive-p)
-          (etv answer)
+          (pen-etv answer)
         answer))))
 
 (defun pen-org-brain-goto-header ()
@@ -743,7 +747,9 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
          (progn (call-interactively 'org-next-visible-heading)
                 (previous-line)))
      (call-interactively 'mwim-end-of-line-or-code)
-     (message "Couldn't find heading"))))
+     (message "Couldn't find heading")
+     (end-of-buffer)
+     (newline))))
 
 (defun pen-org-brain-goto-current ()
   (interactive)
@@ -806,9 +812,10 @@ a \"file\" link."
               (let ((block-name (concat (org-brain-current-name) "-description")))
                 (if (not (org-babel-find-named-block block-name))
                     (progn
-                      (insert description)
-                      (call-interactively 'save-buffer)
-                      (call-interactively 'kill-buffer-and-window))))
+                      (insert (pen-snc (pen-cmd "pen-org-template-gen" "brain-description" block-name) description))
+                      ;; (call-interactively 'save-buffer)
+                      ;; (call-interactively 'kill-buffer-and-window)
+                      )))
               (with-current-buffer cb
                 (revert-buffer))))))))
 
