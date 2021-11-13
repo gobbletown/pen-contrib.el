@@ -855,10 +855,7 @@ a \"file\" link."
 
 (defun org-brain-go-index ()
   (interactive)
-  ;; (org-brain-visualize-reset-map "index")
-  (obsb "billboard")
-  ;; (org-brain-visualize-reset-map "billboard")
-  )
+  (obsb "billboard"))
 
 (defun org-brain-at-top ()
   (eq 1 (org-brain-current-depth)))
