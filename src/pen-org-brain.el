@@ -269,8 +269,7 @@ If ALL is nil, choose only between externally linked children."
         (find-file b)
         (with-current-buffer (current-buffer)
           (save-buffer)
-          (kill-buffer)))
-  )
+          (kill-buffer))))
 
 (defun org-brain-entry-from-text (text)
   (interactive (list (read-string-hist "org-brain-entry: ")))
