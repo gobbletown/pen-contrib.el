@@ -696,7 +696,7 @@ Update the `org-id-locations' global hash-table, and update the
 
 (defun org-brain-existing-subtopics-stringlist (&optional add-dash)
   ;; output a multiline dashed string
-  (awk1
+  (pen-awk1
    (pen-list2str
     (if add-dash
         (mapcar
@@ -775,9 +775,9 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
                   (setq subtopic-candidates
                         (-filter-not-empty-string
                          (-uniq-u
-                          (str2list
+                          (pen-str2list
                            (concat
-                            (awk1 subtopic-candidates)
+                            (pen-awk1 subtopic-candidates)
                             (org-brain-existing-subtopics-stringlist)
                             (org-brain-existing-subtopics-stringlist))))))
 
@@ -785,7 +785,7 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
                   ;; The prompt does "- " removal on its own now
                   ;; (setq subtopic-candidates
-                  ;;       (str2list
+                  ;;       (pen-str2list
                   ;;        (cl-sn
                   ;;         "sed 's/^- //'"
                   ;;         :stdin
