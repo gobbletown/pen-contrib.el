@@ -1174,6 +1174,7 @@ Also stop descending if a node has been visited before.
 (define-key org-brain-visualize-mode-map (kbd "i") 'pen-org-brain-goto-current)
 
 (define-key org-brain-visualize-mode-map (kbd "M-TAB") 'org-brain-suggest-subtopics)
+(define-key org-brain-visualize-mode-map (kbd "<M-tab>") 'org-brain-suggest-subtopics)
 
 (define-key org-brain-visualize-mode-map (kbd "C-c C-c") #'org-ctrl-c-ctrl-c)
 (define-key org-brain-visualize-mode-map (kbd "C-c C-o") 'org-open-at-point)
