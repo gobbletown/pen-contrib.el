@@ -632,31 +632,34 @@ suggest-full-list will ask if you want to add the entire list as subtopics to th
 
                          ;; These evals are necessary. Otherwise, emacs will prompt when the function is defined
                          (let ((s
-                                (eval
-                                 `(pen-single-batch
-                                   (pf-subtopic-generation/2
-                                    ,(pen-topic)
-                                    ,existing-subtopics-string)))))
+                                (car
+                                 (eval
+                                  `(pen-single-batch
+                                    (pf-subtopic-generation/2
+                                     ,(pen-topic)
+                                     ,existing-subtopics-string))))))
                            (if (not (sor s))
                                (progn
                                  (message "Empty generation 1/3. Trying again.")
                                  (setq
                                   s
-                                  (eval
-                                   `(upd (pen-single-batch
-                                          (pf-subtopic-generation/2
-                                           ,(pen-topic)
-                                           ,existing-subtopics-string)))))
+                                  (car
+                                   (eval
+                                    `(upd (pen-single-batch
+                                           (pf-subtopic-generation/2
+                                            ,(pen-topic)
+                                            ,existing-subtopics-string))))))
                                  (if (not (sor s))
                                      (progn
                                        (message "Empty generation 2/3. Trying again.")
                                        (setq
                                         s
-                                        (eval
-                                         `(upd (pen-single-batch
-                                                (pf-subtopic-generation/2
-                                                 ,(pen-topic)
-                                                 ,existing-subtopics-string)))))
+                                        (car
+                                         (eval
+                                          `(upd (pen-single-batch
+                                                 (pf-subtopic-generation/2
+                                                  ,(pen-topic)
+                                                  ,existing-subtopics-string))))))
                                        (if (not (sor s))
                                            (progn
                                              (message "Empty generation 3/3. Giving up.")
